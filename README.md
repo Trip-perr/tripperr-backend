@@ -10,7 +10,7 @@ To Run this Project in Local:
 6. Run MongoDB server on local
    a. brew services start mongodb-community@8.0 (only for mac)
    b. brew services stop mongodb-community@8.0 (only for mac)
-8. Run Postman (collection shared)
+8. Run Postman (collection - https://github.com/Trip-perr/tripperr-backend/blob/main/Tripperr.postman_collection.json)
 9. Try running APIs
 10. Done!!
 11. Contribute....!!!
