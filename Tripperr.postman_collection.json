@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "bedb67ab-62d6-454f-8e28-c9f37ad8cbc6",
+		"name": "Trip Plans",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40618353"
+	},
+	"item": [
+		{
+			"name": "Create Trip Plan",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Summer Vacation 2\",\n  \"startDate\": \"2024-06-01\",\n  \"endDate\": \"2024-06-15\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/trip-plans/createTripPlan",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"trip-plans",
+						"createTripPlan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Trip Plans",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Summer Vacation\",\n  \"startDate\": \"2024-06-01\",\n  \"endDate\": \"2024-06-15\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/trip-plans/getAllTripPlans",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"trip-plans",
+						"getAllTripPlans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a Trip Plan",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Summer Vacation\",\n  \"startDate\": \"2024-06-01\",\n  \"endDate\": \"2024-06-15\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/trip-plans/getTripPlan/6769bbaf666f555a2b97b61f",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"trip-plans",
+						"getTripPlan",
+						"6769bbaf666f555a2b97b61f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Trip Plan",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Summer Vacation\",\n  \"startDate\": \"2024-06-01\",\n  \"endDate\": \"2024-06-15\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/trip-plans/deleteTripPlan/6769bbaf666f555a2b97b61f",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"trip-plans",
+						"deleteTripPlan",
+						"6769bbaf666f555a2b97b61f"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
