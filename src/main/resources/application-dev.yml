@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/tripperr_dev
+
+logging:
+  level:
+    root: INFO
+    com.tripperr.api: DEBUG
+    org.springframework.security: INFO
+    org.springframework.data.mongodb: INFO
+
+management:
+  endpoint:
+    health:
+      show-details: always
