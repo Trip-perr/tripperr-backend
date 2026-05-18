@@ -1,134 +1,461 @@
 {
-	"info": {
-		"_postman_id": "bedb67ab-62d6-454f-8e28-c9f37ad8cbc6",
-		"name": "Trip Plans",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "40618353"
-	},
-	"item": [
-		{
-			"name": "Create Trip Plan",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"title\": \"Summer Vacation 2\",\n  \"startDate\": \"2024-06-01\",\n  \"endDate\": \"2024-06-15\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/trip-plans/createTripPlan",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"trip-plans",
-						"createTripPlan"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get All Trip Plans",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"title\": \"Summer Vacation\",\n  \"startDate\": \"2024-06-01\",\n  \"endDate\": \"2024-06-15\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/trip-plans/getAllTripPlans",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"trip-plans",
-						"getAllTripPlans"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get a Trip Plan",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"title\": \"Summer Vacation\",\n  \"startDate\": \"2024-06-01\",\n  \"endDate\": \"2024-06-15\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/trip-plans/getTripPlan/6769bbaf666f555a2b97b61f",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"trip-plans",
-						"getTripPlan",
-						"6769bbaf666f555a2b97b61f"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete a Trip Plan",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"title\": \"Summer Vacation\",\n  \"startDate\": \"2024-06-01\",\n  \"endDate\": \"2024-06-15\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/trip-plans/deleteTripPlan/6769bbaf666f555a2b97b61f",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"trip-plans",
-						"deleteTripPlan",
-						"6769bbaf666f555a2b97b61f"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "tripperr-api-v1",
+    "name": "Tripperr API",
+    "description": "Travel planning platform API — Auth, Users, Trips, Places.\n\n**Setup:**\n1. Set `baseUrl` variable to `http://localhost:8080`\n2. Register or login — `accessToken` and `refreshToken` are saved automatically.\n3. All protected requests use `{{accessToken}}` via Bearer auth.\n\n**Swagger UI:** `{{baseUrl}}/swagger-ui/index.html`",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl",      "value": "http://localhost:8080", "type": "string" },
+    { "key": "accessToken",  "value": "",                      "type": "string" },
+    { "key": "refreshToken", "value": "",                      "type": "string" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{accessToken}}", "type": "string" }]
+  },
+  "item": [
+
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('accessToken',  body.data.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', body.data.refreshToken);",
+                  "  pm.test('Register successful', () => pm.response.to.have.status(201));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "auth": { "type": "noauth" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Aryan Singh\",\n  \"email\": \"aryan@tripperr.com\",\n  \"password\": \"Secret@1234\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "register"]
+            },
+            "description": "Create a new user account. Saves `accessToken` and `refreshToken` automatically."
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Aryan Singh\",\n  \"email\": \"aryan@tripperr.com\",\n  \"password\": \"Secret@1234\"\n}"
+                },
+                "url": { "raw": "{{baseUrl}}/api/v1/auth/register" }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9...\",\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9...\",\n    \"tokenType\": \"Bearer\",\n    \"expiresInSeconds\": 900,\n    \"user\": {\n      \"id\": \"6769bbaf666f555a2b97b61f\",\n      \"name\": \"Aryan Singh\",\n      \"email\": \"aryan@tripperr.com\",\n      \"roles\": [\"USER\"],\n      \"enabled\": true,\n      \"createdAt\": \"2026-05-19T10:00:00Z\",\n      \"updatedAt\": \"2026-05-19T10:00:00Z\"\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('accessToken',  body.data.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', body.data.refreshToken);",
+                  "  pm.test('Login successful', () => pm.response.to.have.status(200));",
+                  "  pm.test('Access token present', () => pm.expect(body.data.accessToken).to.not.be.empty);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "auth": { "type": "noauth" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"aryan@tripperr.com\",\n  \"password\": \"Secret@1234\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            },
+            "description": "Authenticate with email + password. Saves `accessToken` and `refreshToken` automatically."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"aryan@tripperr.com\",\n  \"password\": \"Secret@1234\"\n}"
+                },
+                "url": { "raw": "{{baseUrl}}/api/v1/auth/login" }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9...\",\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9...\",\n    \"tokenType\": \"Bearer\",\n    \"expiresInSeconds\": 900,\n    \"user\": {\n      \"id\": \"6769bbaf666f555a2b97b61f\",\n      \"name\": \"Aryan Singh\",\n      \"email\": \"aryan@tripperr.com\",\n      \"roles\": [\"USER\"],\n      \"enabled\": true\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('accessToken',  body.data.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', body.data.refreshToken);",
+                  "  pm.test('Token refreshed', () => pm.response.to.have.status(200));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "auth": { "type": "noauth" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/refresh",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "refresh"]
+            },
+            "description": "Exchange a refresh token for a new access + refresh token pair."
+          }
+        },
+        {
+          "name": "Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set('accessToken', '');",
+                  "  pm.collectionVariables.set('refreshToken', '');",
+                  "  pm.test('Logged out', () => pm.response.to.have.status(200));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "logout"]
+            },
+            "description": "Revoke all refresh tokens for the authenticated user. Clears stored tokens."
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get Current User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has user id', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.data.id).to.not.be.empty;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "me"]
+            },
+            "description": "Returns the profile of the currently authenticated user."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "url": { "raw": "{{baseUrl}}/api/v1/users/me" }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": \"6769bbaf666f555a2b97b61f\",\n    \"name\": \"Aryan Singh\",\n    \"email\": \"aryan@tripperr.com\",\n    \"roles\": [\"USER\"],\n    \"enabled\": true,\n    \"profileImageUrl\": null,\n    \"createdAt\": \"2026-05-19T10:00:00Z\",\n    \"updatedAt\": \"2026-05-19T10:00:00Z\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "name": "Trips",
+      "item": [
+        {
+          "name": "Create Trip",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('tripId', body.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Tokyo Adventure 2026\",\n  \"description\": \"10-day cultural and food tour of Tokyo\",\n  \"destination\": \"Tokyo\",\n  \"country\": \"Japan\",\n  \"startDate\": \"2026-09-01\",\n  \"endDate\": \"2026-09-10\",\n  \"estimatedBudget\": 3000.00,\n  \"currency\": \"USD\",\n  \"tripType\": \"ADVENTURE\",\n  \"visibility\": \"PRIVATE\",\n  \"tags\": [\"food\", \"culture\", \"solo\"],\n  \"itineraryDays\": [\n    {\n      \"dayNumber\": 1,\n      \"date\": \"2026-09-01\",\n      \"activities\": [\n        {\n          \"title\": \"Arrive at Narita Airport\",\n          \"location\": \"Narita International Airport\",\n          \"startTime\": \"14:00\",\n          \"category\": \"TRANSPORT\",\n          \"estimatedCost\": 30.00\n        },\n        {\n          \"title\": \"Check in to Hotel\",\n          \"location\": \"Shinjuku, Tokyo\",\n          \"startTime\": \"17:00\",\n          \"category\": \"LODGING\",\n          \"estimatedCost\": 150.00\n        }\n      ]\n    }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/trips",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "trips"]
+            },
+            "description": "Create a new trip plan. Saves `tripId` variable automatically."
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "url": { "raw": "{{baseUrl}}/api/v1/trips" }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": \"abc123def456\",\n    \"title\": \"Tokyo Adventure 2026\",\n    \"destination\": \"Tokyo\",\n    \"country\": \"Japan\",\n    \"startDate\": \"2026-09-01\",\n    \"endDate\": \"2026-09-10\",\n    \"estimatedBudget\": 3000.00,\n    \"currency\": \"USD\",\n    \"tripType\": \"ADVENTURE\",\n    \"visibility\": \"PRIVATE\",\n    \"ownerId\": \"6769bbaf666f555a2b97b61f\",\n    \"tags\": [\"food\", \"culture\", \"solo\"],\n    \"createdAt\": \"2026-05-19T10:00:00Z\",\n    \"updatedAt\": \"2026-05-19T10:00:00Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get All Accessible Trips",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/trips?page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "trips"],
+              "query": [
+                { "key": "query", "value": "", "disabled": true, "description": "Full-text search" },
+                { "key": "page",  "value": "0" },
+                { "key": "size",  "value": "20" }
+              ]
+            },
+            "description": "List trips owned by, collaborated on, or publicly visible to the current user."
+          }
+        },
+        {
+          "name": "Get My Trips",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/trips/mine?page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "trips", "mine"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            },
+            "description": "List only trips owned by the authenticated user."
+          }
+        },
+        {
+          "name": "Get Trip by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/trips/{{tripId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "trips", "{{tripId}}"]
+            },
+            "description": "Fetch a single trip plan by ID. Uses `tripId` variable set by Create Trip."
+          }
+        },
+        {
+          "name": "Update Trip",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Tokyo Adventure 2026 — Updated\",\n  \"description\": \"10-day cultural and food tour of Tokyo (updated)\",\n  \"destination\": \"Tokyo\",\n  \"country\": \"Japan\",\n  \"startDate\": \"2026-09-01\",\n  \"endDate\": \"2026-09-11\",\n  \"estimatedBudget\": 3500.00,\n  \"currency\": \"USD\",\n  \"tripType\": \"ADVENTURE\",\n  \"visibility\": \"PUBLIC\",\n  \"tags\": [\"food\", \"culture\", \"solo\", \"extended\"]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/trips/{{tripId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "trips", "{{tripId}}"]
+            },
+            "description": "Full update of a trip plan. Only the owner can update."
+          }
+        },
+        {
+          "name": "Delete Trip",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/trips/{{tripId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "trips", "{{tripId}}"]
+            },
+            "description": "Delete a trip plan. Only the owner can delete. Returns 204 No Content."
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Places",
+      "item": [
+        {
+          "name": "Get All Places",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": { "type": "noauth" },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/places?page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "places"],
+              "query": [
+                { "key": "country", "value": "Japan",   "disabled": true },
+                { "key": "city",    "value": "Tokyo",   "disabled": true },
+                { "key": "page",    "value": "0" },
+                { "key": "size",    "value": "20" }
+              ]
+            },
+            "description": "List vacation places. Public endpoint — no auth required. Filter by country and/or city."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "url": { "raw": "{{baseUrl}}/api/v1/places?page=0&size=20" }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"content\": [\n      {\n        \"id\": \"place001\",\n        \"name\": \"Mount Fuji\",\n        \"city\": \"Fujinomiya\",\n        \"country\": \"Japan\",\n        \"description\": \"Iconic active volcano and highest peak in Japan.\",\n        \"categories\": [\"NATURE\", \"HIKING\"],\n        \"rating\": 4.9,\n        \"bestTimeToVisit\": \"July to August\",\n        \"estimatedBudget\": 50.00,\n        \"currency\": \"USD\"\n      }\n    ],\n    \"page\": 0,\n    \"size\": 20,\n    \"totalElements\": 1,\n    \"totalPages\": 1,\n    \"last\": true\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Search Places",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": { "type": "noauth" },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/places/search?query=tokyo&minRating=4.0&page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "places", "search"],
+              "query": [
+                { "key": "query",     "value": "tokyo" },
+                { "key": "minRating", "value": "4.0" },
+                { "key": "page",      "value": "0" },
+                { "key": "size",      "value": "10" }
+              ]
+            },
+            "description": "Free-text search across place names and descriptions. Public endpoint."
+          }
+        },
+        {
+          "name": "Create Place (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Shibuya Crossing\",\n  \"city\": \"Tokyo\",\n  \"country\": \"Japan\",\n  \"description\": \"World-famous pedestrian scramble crossing in the heart of Tokyo.\",\n  \"categories\": [\"SIGHTSEEING\", \"CULTURE\"],\n  \"rating\": 4.7,\n  \"images\": [\n    \"https://example.com/shibuya1.jpg\"\n  ],\n  \"bestTimeToVisit\": \"October to November\",\n  \"estimatedBudget\": 0,\n  \"currency\": \"USD\",\n  \"tags\": [\"iconic\", \"urban\", \"photography\"],\n  \"coordinates\": {\n    \"latitude\": 35.6595,\n    \"longitude\": 139.7005\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/places",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "places"]
+            },
+            "description": "Create a vacation place. Requires ADMIN role."
+          }
+        }
+      ]
+    }
+
+  ]
 }
