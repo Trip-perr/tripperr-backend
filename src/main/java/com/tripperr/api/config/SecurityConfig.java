@@ -23,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -81,6 +82,15 @@ public class SecurityConfig {
             .exceptionHandling(eh -> eh
                     .authenticationEntryPoint((req, res, ex) -> writeError(res, objectMapper, 401, "UNAUTHORIZED", "Authentication required", req.getRequestURI()))
                     .accessDeniedHandler((req, res, ex) -> writeError(res, objectMapper, 403, "ACCESS_DENIED", "Access denied", req.getRequestURI()))
+            )
+            .headers(headers -> headers
+                    .contentTypeOptions(opts -> {})
+                    .frameOptions(frame -> frame.deny())
+                    .referrerPolicy(ref -> ref.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
+                    .permissionsPolicyHeader(perm -> perm.policy("camera=(), microphone=(), geolocation=(), interest-cohort=()"))
+                    .httpStrictTransportSecurity(hsts -> hsts
+                            .includeSubDomains(true)
+                            .maxAgeInSeconds(31536000L))
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
